@@ -1,10 +1,22 @@
 import { Component } from "react";
 import { connect } from "react-redux";
 import { FETCH_WEATHER_REQUESTED } from "../../reducers/data";
-
+// celcius - metric
+// farenheit - imperial
+// pressure hpa
 class Main extends Component {
+  constructor() {
+    super();
+    this.state = {
+      unit: 'metric',
+      state: 'Munich',
+      countryCode: 'de'
+    };
+
+  }
+
   componentDidMount() {
-    this.props.fetchWeatherData();
+    this.props.fetchWeatherData({ ...this.state });
   }
 
   componentDidUpdate() {
