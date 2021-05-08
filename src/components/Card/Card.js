@@ -1,7 +1,32 @@
 import "./Card.scss";
 import thunderstorm from "../../assets/icons/thunderstorm_day.png";
+import clear from "../../assets/icons/clear_day.png";
+import rain from "../../assets/icons/rain_day.png";
+import drizzle from "../../assets/icons/drizzle_day.png";
+import snow from "../../assets/icons/snow_day.png";
+import atmosphere from "../../assets/icons/atmosphere_day.png";
+import clouds from "../../assets/icons/clouds_day.png";
 
-const Card = ({ state, date, temp, pressure, humidity, cast }) => {
+const icons = {
+  thunderstorm,
+  clear,
+  rain,
+  drizzle,
+  snow,
+  atmosphere,
+  clouds,
+};
+
+const Card = ({
+  state,
+  date,
+  temp,
+  pressure,
+  humidity,
+  cast,
+  unit,
+  overall,
+}) => {
   return (
     <div className="card">
       <div className="outline"></div>
@@ -9,8 +34,9 @@ const Card = ({ state, date, temp, pressure, humidity, cast }) => {
         <p className="state">{state}</p>
         <p className="date">{date}</p>
         <p className="temp">
-          {temp}<sup className="degrees">o</sup>
-          <sup className="unit">C</sup>
+          {temp}
+          <sup className="degrees">o</sup>
+          <sup className="unit">{unit === "metric" ? "C" : "F"}</sup>
         </p>
         <div className="bottom">
           <div className="bottom-item">
@@ -25,7 +51,7 @@ const Card = ({ state, date, temp, pressure, humidity, cast }) => {
       </div>
       <div className="additional">
         <p>{cast}</p>
-        <img src={thunderstorm} alt="weather" />
+        <img src={icons[overall.toLowerCase()]} alt="weather" />
       </div>
     </div>
   );

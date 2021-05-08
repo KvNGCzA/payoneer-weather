@@ -1,4 +1,4 @@
-[
+const countries = [
   "IR",
   "SY",
   "CY",
@@ -247,3 +247,5 @@
   "CONTINENTS",
   "AQ"
 ]
+
+export default countries;

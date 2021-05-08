@@ -1,4 +1,4 @@
-{
+const regions = {
   "IR": [
     "Ḩeşār-e Sefīd",
     "Taglag",
@@ -210073,3 +210073,5 @@
     "McMurdo Station"
   ]
 }
+
+export default regions;
