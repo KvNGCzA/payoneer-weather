@@ -1,4 +1,4 @@
-@import '../../assets/styles/_colors';
+@import "../../assets/styles/_colors";
 
 .card {
   align-items: center;
@@ -9,11 +9,16 @@
   padding-left: 2em;
   position: relative;
   width: 30%;
-  background-color: #FFF;
+  background-color: #fff;
+
+  &.active {
+    box-shadow: $hover_shadow;
+    border: 1px solid rgba(255, 72, 0, 0.5);
+  }
 
   &:hover {
     cursor: pointer;
-    box-shadow: 0px 1px 7px rgba(255, 72, 0, 0.4);
+    box-shadow: $hover_shadow;
   }
 
   .outline {
@@ -33,7 +38,8 @@
       margin: 0.3em 0;
     }
 
-    .state, .temp {
+    .state,
+    .temp {
       color: $payoneer_grey;
     }
 
@@ -113,7 +119,8 @@
     height: auto;
     padding: 0;
 
-    .details, .additional {
+    .details,
+    .additional {
       width: 100%;
       display: flex;
       flex-direction: column;

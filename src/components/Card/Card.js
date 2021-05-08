@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import "./Card.scss";
 import thunderstorm from "../../assets/icons/thunderstorm_day.png";
 import clear from "../../assets/icons/clear_day.png";
@@ -24,12 +24,17 @@ const Card = ({
   temp,
   pressure,
   humidity,
-  cast,
+  overcast,
   unit,
   overall,
+  handleCardClick,
+  isActive,
 }) => {
   return (
-    <div className="card">
+    <div
+      className={`card${isActive ? " active" : ""}`}
+      onClick={handleCardClick}
+    >
       <div className="outline"></div>
       <div className="details">
         <p className="state">{state}</p>
@@ -51,7 +56,7 @@ const Card = ({
         </div>
       </div>
       <div className="additional">
-        <p>{cast}</p>
+        <p>{overcast}</p>
         <img src={icons[overall.toLowerCase()]} alt="weather" />
       </div>
     </div>

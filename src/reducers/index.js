@@ -1,17 +1,17 @@
 import {
   FETCH_WEATHER_SUCCESS,
-  FETCH_COUNTRY_CODES_SUCCESS,
-  TOGGLE_LOADING
+  TOGGLE_LOADING,
+  FETCH_WEATHER_FAILED,
 } from "./constants";
 
 const initialState = {
-  weatherData: [],
-  loading: true
+  weatherData: {},
+  loading: true,
 };
 
 export default function reducer(state = initialState, action) {
   const newState = {
-    ...state
+    ...state,
   };
 
   switch (action.type) {
@@ -24,8 +24,8 @@ export default function reducer(state = initialState, action) {
       newState.loading = !newState.loading;
 
       return newState;
-    case FETCH_COUNTRY_CODES_SUCCESS:
-      newState.countryCodes = action.data;
+    case FETCH_WEATHER_FAILED:
+      newState.loading = false;
 
       return newState;
     default:

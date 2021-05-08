@@ -1,4 +1,4 @@
-@import '../../assets/styles/_colors';
+@import "../../assets/styles/_colors";
 
 .main {
   .content-body {
@@ -6,7 +6,11 @@
     max-width: 64em;
     flex: 1;
     margin: auto;
-  
+
+    .error {
+      color: $payoneer_orange;
+    }
+
     .filters {
       height: 4em;
       display: flex;
@@ -14,7 +18,7 @@
       justify-content: space-between;
 
       .unit {
-        background-color: #FFF;
+        background-color: #fff;
         border-radius: 10px;
         display: flex;
         padding: 0 0 0 1em;
@@ -27,7 +31,8 @@
             flex-direction: row;
 
             .Mui-checked {
-              span, & + span {
+              span,
+              & + span {
                 color: $payoneer_orange;
               }
             }
@@ -64,10 +69,33 @@
 
         button {
           border: 0;
+          background: transparent;
+          display: flex;
+          align-items: center;
+          color: $payoneer_blue;
 
           &:hover {
             cursor: pointer;
           }
+        }
+      }
+    }
+
+    .graph {
+      display: flex;
+      justify-content: center;
+
+      .chart-placeholder {
+        background-color: $payoneer_orange;
+        color: #fff;
+        font-size: 20px;
+        text-align: center;
+        margin: 4em 0 0;
+
+        p {
+          text-transform: uppercase;
+          font-weight: bold;
+          padding: 3em 5em;
         }
       }
     }
@@ -78,6 +106,14 @@
   .main {
     .content-body {
       padding: 6em 1em;
+
+      .graph {
+        .chart-placeholder {
+          p {
+            padding: 3em;
+          }
+        }
+      }
     }
   }
 }
@@ -98,6 +134,14 @@
       .card-parent {
         .cards {
           flex-direction: column;
+        }
+      }
+
+      .graph {
+        .chart-placeholder {
+          p {
+            padding: 3em 1em;
+          }
         }
       }
     }
