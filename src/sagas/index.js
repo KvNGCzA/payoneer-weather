@@ -15,13 +15,16 @@ function* fetchWeather(action) {
       data,
     });
 
-    if (action.data.chartDate && action.data.callback) {
-      action.data.callback(action.data.chartDate, false);
+    if (action.data.chartDate && action.data.successCallback) {
+      action.data.successCallback(action.data.chartDate, false);
     }
   } else {
     yield put({
       type: FETCH_WEATHER_FAILED,
     });
+    if (action.data.failureCallback) {
+      action.data.failureCallback();
+    }
   }
 }
 

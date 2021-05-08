@@ -44,6 +44,7 @@
     .card-parent {
       margin-top: 1em;
       width: 100%;
+      margin: 0 0 4em;
 
       .cards {
         display: flex;
@@ -90,7 +91,6 @@
         color: #fff;
         font-size: 20px;
         text-align: center;
-        margin: 4em 0 0;
 
         p {
           text-transform: uppercase;
@@ -134,6 +134,14 @@
       .card-parent {
         .cards {
           flex-direction: column;
+        }
+
+        .card-control {
+          button {
+            img {
+              width: 2em;
+            }
+          }
         }
       }
 

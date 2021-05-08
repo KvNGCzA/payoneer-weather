@@ -44,9 +44,15 @@ class Main extends Component {
         state,
         countryCode,
         chartDate,
-        callback: this.handleCardClick,
+        successCallback: this.handleCardClick,
+        failureCallback: this.handleRadioFailure,
       });
     });
+  };
+
+  handleRadioFailure = () => {
+    const unit = this.state.unit === "imperial" ? "metric" : "imperial";
+    this.setState({ unit });
   };
 
   handlePagination = () => {
@@ -64,7 +70,7 @@ class Main extends Component {
     const labels = [];
     const data = [];
     const label = `${date} (${
-      this.state.unit === "imperial" ? "Fahrenheit" : "Celsius"
+      this.state.unit === "imperial" ? "Degrees Fahrenheit" : "Degrees Celsius"
     })`;
 
     if (oldLabel === label && date === this.state.chartDate) {
