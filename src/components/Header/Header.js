@@ -1,12 +1,14 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import logo from "../../assets/images/logo.png";
-import './Header.scss';
+import "./Header.scss";
 
 class Header extends Component {
   render() {
     return (
       <header>
-        <img src={logo} alt="payoneer logo" className="header-logo"/>
+        <div>
+          <img src={logo} alt="payoneer logo" className="header-logo" />
+        </div>
       </header>
     );
   }

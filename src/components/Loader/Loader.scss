@@ -11,7 +11,7 @@
       width: 100%;
       justify-content: space-between;
 
-      .loader-location, .loader-temp {
+      .loader-temp {
         height: 4em;
         width: 13em;
         border-radius: 10px;
@@ -55,13 +55,14 @@
 
     .loader-chart {
       margin: auto;
+      margin-bottom: 1em;
       display: flex;
       justify-content: space-around;
       align-items: baseline;
 
       .loader-bar {
         height: 15em;
-        width: 3.5em;
+        width: 6%;
 
         &:first-child {
           height: 10em;
@@ -115,5 +116,37 @@
   }
   100%{
       background-position: 468px 0
+  }
+}
+
+
+@media only screen and (max-width: 1038px) {
+  .loader-body {
+    .loader-container {
+      padding: 0 1em;
+    }
+  }
+}
+
+@media only screen and (max-width: 579px) {
+  .loader-body {
+    .loader-container {
+      .loader-filters {
+        flex-direction: column;
+
+        .loader-temp {
+          width: 100%;
+        }
+      }
+
+      .loader-cards {
+        flex-direction: column;
+
+        .loader-card {
+          width: 100%;
+          margin-bottom: 1em;
+        }
+      }
+    }
   }
 }

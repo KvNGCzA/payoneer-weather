@@ -1,11 +1,14 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Tooltip from "@material-ui/core/Tooltip";
-import { FETCH_WEATHER_REQUESTED, TOGGLE_LOADING } from "../../reducers/constants";
+import {
+  FETCH_WEATHER_REQUESTED,
+  TOGGLE_LOADING,
+} from "../../reducers/constants";
 import Card from "../Card/Card";
 import "./Main.scss";
 import chevronLeft from "../../assets/icons/chevron-left.svg";
@@ -20,8 +23,8 @@ class Main extends Component {
       unit: "imperial",
       state: "Munich",
       countryCode: "de",
-      showLeft: false,
-      showRight: true,
+      pageIndex: 0,
+      pageCount: 3,
     };
   }
 
@@ -29,44 +32,24 @@ class Main extends Component {
     this.props.fetchWeatherData({ ...this.state });
   }
 
-  componentDidUpdate() {
-    // console.log("this.props", this.props);
-  }
-
-  handleScroll = (direction) => {
-    const element = document.getElementById("cards");
-
-    element.scroll({
-      top: 0,
-      left: direction === "right" ? element.scrollWidth : 0,
-      behavior: "smooth",
-    });
-  }
-
-  handleOnScroll = (e) => {
-    if (e.target.scrollLeft === 0) {
-      this.setState({ showLeft: false });
-      return;
-    }
-
-    if (e.target.scrollLeft + e.target.clientWidth === e.target.scrollWidth) {
-      this.setState({ showRight: false });
-      return;
-    }
-
-    if (!this.state.showLeft || !this.state.showRight) {
-      this.setState({ showLeft: true, showRight: true });
-    }
-  };
-
   handleRadioButtons = (event) => {
     this.setState(
-      { unit: event.target.value, showLeft: false, showRight: true },
+      { unit: event.target.value, pageCount: 3 },
       () => {
         this.props.toggleLoading();
         this.props.fetchWeatherData({ ...this.state });
       }
     );
+  };
+
+  handlePagination = () => {
+    const { order } = this.props.weatherData;
+    const pageIndex = this.state.pageIndex ? 0 : 1;
+    const start = !this.state.pageIndex ? this.state.pageIndex : 3;
+    const end = start + 3;
+    const { length: pageCount } = order.slice(start, end);
+
+    this.setState({ pageIndex, pageCount });
   };
 
   renderRadioButtons = () => {
@@ -96,15 +79,18 @@ class Main extends Component {
         </RadioGroup>
       </FormControl>
     );
-  }
+  };
 
   renderCards() {
     const { order, dailyAverages } = this.props.weatherData;
+    const start = !this.state.pageIndex ? this.state.pageIndex : 3;
+    const end = start + 3;
 
-    const cards =
+    return (
       order &&
-      order.map((current) => {
+      order.slice(start, end).map((current) => {
         const daily = dailyAverages[current];
+
         return (
           <Card
             key={current}
@@ -118,33 +104,32 @@ class Main extends Component {
             overall={daily.overall}
           />
         );
-      });
-
-    return cards;
+      })
+    );
   }
 
   renderPagination = () => {
     return (
       <div className="card-control">
         <button
-          onClick={() => this.handleScroll("left")}
+          onClick={this.handlePagination}
           style={{
-            visibility: this.state.showLeft ? "visible" : "hidden",
+            visibility: this.state.pageIndex ? "visible" : "hidden",
           }}
         >
           <img src={chevronLeft} alt="chevron left" />
         </button>
         <button
-          onClick={() => this.handleScroll("right")}
+          onClick={this.handlePagination}
           style={{
-            visibility: this.state.showRight ? "visible" : "hidden",
+            visibility: !this.state.pageIndex ? "visible" : "hidden",
           }}
         >
           <img src={chevronRight} alt="chevron right" />
         </button>
       </div>
     );
-  }
+  };
 
   render() {
     return this.props.loading ? (
@@ -154,11 +139,18 @@ class Main extends Component {
         <div className="content-body">
           <div className="filters">
             <div className="location"></div>
-            <div className="unit">{this.renderRadioButtons()}</div>
+            <div className="unit">
+              {this.renderRadioButtons()}
+            </div>
           </div>
 
           <div className="card-parent">
-            <div id="cards" className="cards" onScroll={this.handleOnScroll}>
+            <div
+              id="cards"
+              className={`cards${
+                this.state.pageCount < 3 ? " underThree" : ""
+              }`}
+            >
               {this.renderCards()}
             </div>
             {this.renderPagination()}

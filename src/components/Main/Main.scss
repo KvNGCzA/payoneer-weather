@@ -44,14 +44,15 @@
         display: flex;
         justify-content: space-between;
         width: 100%;
-        overflow-x: scroll;
+        overflow-x: visible;
         padding: 1em 0;
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
 
-        /* Hide scrollbar for Chrome, Safari and Opera */
-        &::-webkit-scrollbar {
-          display: none;
+        &.underThree {
+          justify-content: flex-start;
+
+          & > .card {
+            margin-right: 5em;
+          }
         }
       }
 
@@ -63,9 +64,42 @@
 
         button {
           border: 0;
+
+          &:hover {
+            cursor: pointer;
+          }
         }
       }
     }
   }
 }
 
+@media only screen and (max-width: 1038px) {
+  .main {
+    .content-body {
+      padding: 6em 1em;
+    }
+  }
+}
+
+@media only screen and (max-width: 579px) {
+  .main {
+    .content-body {
+      padding: 6em 1em;
+
+      .filters {
+        flex-direction: column;
+
+        .unit {
+          justify-content: center;
+        }
+      }
+
+      .card-parent {
+        .cards {
+          flex-direction: column;
+        }
+      }
+    }
+  }
+}

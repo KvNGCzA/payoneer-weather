@@ -1,7 +1,6 @@
-import './App.css';
+import { Fragment } from 'react';
 import Main from './components/Main/Main';
 import Header from './components/Header/Header';
-import { Fragment } from 'react';
 
 function App() {
   return (
