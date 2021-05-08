@@ -1,0 +1,104 @@
+@import '../../assets/styles/_colors';
+
+.card {
+  align-items: center;
+  box-shadow: $default_shadow;
+  border-radius: 0px 10px 10px 0px;
+  display: flex;
+  height: 14.5em;
+  padding-left: 2em;
+  position: relative;
+  min-width: 30%;
+  margin-right: 4.6%;
+  background-color: #FFF;
+
+  .outline {
+    background-color: $payoneer_orange;
+    width: 0.4em;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .details {
+    flex: 1;
+
+    .state {
+      font-size: 34px;
+      margin: 0.3em 0;
+    }
+
+    .state, .temp {
+      color: $payoneer_grey;
+    }
+
+    .temp {
+      font-size: 54px;
+      margin: 0.1em 0;
+
+      .degrees {
+        font-size: 14px;
+        position: relative;
+        top: -1em;
+        font-weight: bold;
+      }
+
+      .unit {
+        font-size: 24px;
+        position: relative;
+        top: -0.2em;
+      }
+    }
+
+    .date {
+      color: $payoneer_blue;
+      font-size: 16px;
+    }
+
+    .bottom {
+      display: flex;
+      width: 100%;
+
+      .bottom-item {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        span {
+          &:first-child {
+            color: $payoneer_blue;
+            font-size: 12px;
+            text-transform: capitalize;
+          }
+
+          &:last-child {
+            color: $payoneer_grey;
+            font-size: 16px;
+            margin: 0.3em 0;
+          }
+        }
+      }
+    }
+  }
+
+  .additional {
+    flex: 1;
+    align-self: flex-start;
+    margin-top: 2em;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+
+    p {
+      font-size: 12px;
+      color: $payoneer_grey;
+      text-transform: capitalize;
+    }
+
+    img {
+      width: 7em;
+      height: auto;
+    }
+  }
+}

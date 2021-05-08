@@ -1,0 +1,42 @@
+@import '../../assets/styles/_colors';
+
+.main {
+  display: flex;
+  justify-content: center;
+
+
+  .content-body {
+    padding-top: 6em;
+    max-width: 64em;
+    flex: 1;
+  
+    .filters {
+      height: 4em;
+      background-color: $payoneer_orange;
+    }
+
+    .card-parent {
+      margin-top: 1em;
+      width: 100%;
+
+      .cards {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        overflow-x: scroll;
+        padding: 1em 0;
+      }
+
+      .card-control {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        margin: 0.5em 0;
+
+        button {
+          border: 0;
+        }
+      }
+    }
+  }
+}
