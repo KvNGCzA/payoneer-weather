@@ -6,6 +6,7 @@ const Pagination = ({ handlePagination, pageIndex }) => {
   return (
     <div className="card-control">
       <button
+        data-testid="prev-button"
         onClick={handlePagination}
         style={{
           visibility: pageIndex ? "visible" : "hidden",
@@ -15,6 +16,7 @@ const Pagination = ({ handlePagination, pageIndex }) => {
         Prev page
       </button>
       <button
+        data-testid="next-button"
         onClick={handlePagination}
         style={{
           visibility: !pageIndex ? "visible" : "hidden",
