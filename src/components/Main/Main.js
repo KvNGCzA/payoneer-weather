@@ -1,11 +1,16 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Tooltip from "@material-ui/core/Tooltip";
 import "./Main.scss";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  FormControlLabel,
+  RadioGroup,
+  Tooltip,
+  Radio,
+} from "@material-ui/core";
 import Chart from "../Chart/Chart";
 import Pagination from "../Pagination/Pagination";
 import {
@@ -14,6 +19,16 @@ import {
 } from "../../reducers/constants";
 import Card from "../Card/Card";
 import Loader from "../Loader/Loader";
+
+const regions = [
+  "Berlin",
+  "Munich",
+  "Hamburg",
+  "Leipzig",
+  "Dresden",
+  "Heidelberg",
+  "Stuttgart",
+];
 
 class Main extends Component {
   constructor() {
@@ -34,24 +49,49 @@ class Main extends Component {
     this.props.fetchWeatherData({ ...this.state });
   }
 
-  handleRadioButtons = (event) => {
-    const { state, countryCode, chartDate } = this.state;
+  handleSelect = (event) => {
+    const { state, unit, pageIndex } = this.state;
 
-    this.setState({ unit: event.target.value, pageCount: 3 }, () => {
+    this.setState(
+      {
+        state: event.target.value,
+        pageIndex: 0,
+        unit: "imperial",
+      },
+      () => {
+        this.props.toggleLoading();
+        this.props.fetchWeatherData({
+          ...this.state,
+          unit: "imperial",
+          state: event.target.value,
+          successCallback: () =>
+            this.setState({ datasets: null, chartDate: null }),
+          failureCallback: () =>
+            this.handleSelectFailure({ state, unit, pageIndex }),
+        });
+      }
+    );
+  };
+
+  handleRadioButtons = (event) => {
+    const { unit } = this.state;
+
+    this.setState({ unit: event.target.value }, () => {
       this.props.toggleLoading();
       this.props.fetchWeatherData({
+        ...this.state,
         unit: event.target.value,
-        state,
-        countryCode,
-        chartDate,
         successCallback: this.handleCardClick,
-        failureCallback: this.handleRadioFailure,
+        failureCallback: () => this.handleRadioFailure(unit),
       });
     });
   };
 
-  handleRadioFailure = () => {
-    const unit = this.state.unit === "imperial" ? "metric" : "imperial";
+  handleSelectFailure = (params) => {
+    this.setState({ ...params });
+  };
+
+  handleRadioFailure = (unit) => {
     this.setState({ unit });
   };
 
@@ -192,11 +232,30 @@ class Main extends Component {
     );
   };
 
+  renderSelect = () => {
+    return (
+      <FormControl className="city-select">
+        <InputLabel htmlFor="grouped-select">City</InputLabel>
+        <Select
+          value={this.state.state}
+          id="grouped-select"
+          onChange={this.handleSelect}
+        >
+          {regions.map((region) => (
+            <MenuItem value={region} key={region}>
+              {region}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    );
+  };
+
   renderBody = () => {
     return (
       <Fragment>
         <div className="filters">
-          <div className="location"></div>
+          <div className="location">{this.renderSelect()}</div>
           <div className="unit">{this.renderRadioButtons()}</div>
         </div>
 

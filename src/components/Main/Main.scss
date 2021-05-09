@@ -17,12 +17,30 @@
       width: 100%;
       justify-content: space-between;
 
+      .location,
       .unit {
         background-color: #fff;
         border-radius: 10px;
-        display: flex;
-        padding: 0 0 0 1em;
         box-shadow: $default_shadow;
+        display: flex;
+        align-items: center;
+      }
+
+      .location {
+        padding: 0 1em;
+
+        .city-select {
+          width: 8em;
+
+          #grouped-select,
+          label {
+            color: $payoneer_grey;
+          }
+        }
+      }
+
+      .unit {
+        padding: 0 0 0 1em;
 
         .custom-fieldset {
           justify-content: center;
@@ -30,10 +48,17 @@
           .custom-radio {
             flex-direction: row;
 
-            .Mui-checked {
+            label {
               span,
               & + span {
-                color: $payoneer_orange;
+                color: $payoneer_grey;
+              }
+
+              .Mui-checked {
+                span,
+                & + span {
+                  color: $payoneer_orange;
+                }
               }
             }
           }
@@ -125,13 +150,20 @@
 
       .filters {
         flex-direction: column;
+        .location {
+          margin-bottom: 1em;
+          padding: 1em 0;
+          justify-content: center;
+        }
 
         .unit {
           justify-content: center;
+          padding: 1em 0;
         }
       }
 
       .card-parent {
+        margin-top: 7em;
         .cards {
           flex-direction: column;
         }
