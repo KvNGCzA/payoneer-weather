@@ -3,7 +3,7 @@ import "./Loader.scss";
 
 const Loader = () => {
   return (
-    <div className="loader-body">
+    <div className="loader-body" data-testid="loader">
       <div className="loader-container">
         <div className="loader-filters">
           <div className="gradient loader-location"></div>

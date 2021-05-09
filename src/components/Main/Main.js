@@ -114,7 +114,11 @@ class Main extends Component {
 
   renderRadioButtons = () => {
     return (
-      <FormControl component="fieldset" className="custom-fieldset">
+      <FormControl
+        component="fieldset"
+        className="custom-fieldset"
+        data-testid="temp-selector"
+      >
         <RadioGroup
           aria-label="unit"
           name="unit"
@@ -200,6 +204,7 @@ class Main extends Component {
           <div
             id="cards"
             className={`cards${this.state.pageCount < 3 ? " underThree" : ""}`}
+            data-testid="cards"
           >
             {this.renderCards()}
           </div>
