@@ -1,3 +1,4 @@
+import React from 'react'
 import { fireEvent, render, cleanup } from "@testing-library/react";
 import Card from "./Card";
 
@@ -9,7 +10,7 @@ const defaultProps = {
   humidity: 200,
   overcast: "clear skies",
   unit: "metric",
-  overall: "Clouds",
+  overallCast: "Clouds",
   handleCardClick: jest.fn(),
   isActive: false,
 };

@@ -26,7 +26,7 @@ const Card = ({
   humidity,
   overcast,
   unit,
-  overall,
+  overallCast,
   handleCardClick,
   isActive,
 }) => {
@@ -58,7 +58,7 @@ const Card = ({
       </div>
       <div className="additional">
         <p>{overcast}</p>
-        <img src={icons[overall.toLowerCase()]} alt="weather" data-testid="card-image"/>
+        <img src={icons[overallCast.toLowerCase()]} alt="weather" data-testid="card-image"/>
       </div>
     </div>
   );

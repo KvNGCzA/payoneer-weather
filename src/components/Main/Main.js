@@ -164,7 +164,7 @@ class Main extends Component {
             humidity={daily.humidity}
             overcast={daily.overcast}
             unit={this.state.unit}
-            overall={daily.overall}
+            overallCast={daily.overallCast}
             handleCardClick={() => this.handleCardClick(current)}
           />
         );

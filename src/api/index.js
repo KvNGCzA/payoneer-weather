@@ -34,47 +34,83 @@ const getDailyAverages = (order, fiveDayData) => {
   const dailyAverages = {};
 
   for (let x = 0; x < order.length; x += 1) {
-    let y = 0;
-    let dayTempAvg = 0;
-    let dayPressureAvg = 0;
-    let dayHumidityAvg = 0;
-    const dayWeather = {};
-    const dayCast = {};
-
     const key = order[x];
-    const currentDay = fiveDayData[key];
+    const currentDayData = fiveDayData[key];
     const numOfData = fiveDayData[key].length;
 
-    while (y < currentDay.length) {
-      dayTempAvg += currentDay[y].main.temp;
-      dayPressureAvg += currentDay[y].main.pressure;
-      dayHumidityAvg += currentDay[y].main.humidity;
-      const currentDayMain = currentDay[y].weather[0].main;
-      const currentDayCast = currentDay[y].weather[0].description;
+    const {
+      dayTotalTemp,
+      dayTotalPressure,
+      dayTotalHumidity,
+      overallCast,
+    } = extractCurrentDayData(currentDayData);
 
-      if (!dayWeather[currentDayMain]) {
-        dayWeather[currentDayMain] = 0;
-      }
-
-      dayWeather[currentDayMain] = dayWeather[currentDayMain] + 1;
-      dayCast[currentDayCast] = dayWeather[currentDayCast] + 1;
-
-      y += 1;
-    }
+    const overcast = getOvercast({ currentDayData, overallCast });
 
     dailyAverages[key] = {
-      temp: Math.round(dayTempAvg / numOfData),
-      pressure: Math.round(dayPressureAvg / numOfData),
-      humidity: Math.round(dayHumidityAvg / numOfData),
-      // If there is a draw the select last one, i.e if Clouds = 2 and Rain = 2 select Rain
-      overall: Object.keys(dayWeather).reduce((a, b) =>
-        dayWeather[a] > dayWeather[b] ? a : b
-      ),
-      overcast: Object.keys(dayCast).reduce((a, b) =>
-        dayCast[a] > dayCast[b] ? a : b
-      ),
+      overallCast,
+      overcast,
+      temp: Math.round(dayTotalTemp / numOfData),
+      pressure: Math.round(dayTotalPressure / numOfData),
+      humidity: Math.round(dayTotalHumidity / numOfData),
     };
   }
 
   return dailyAverages;
+};
+
+const getOvercast = ({ currentDayData, overallCast }) => {
+  const filteredDay = currentDayData.filter(
+    (current) => current.weather[0].main === overallCast
+  );
+
+  let j = 0;
+  const dayCast = {};
+
+  while (j < filteredDay.length) {
+    const currentDayCast = filteredDay[j].weather[0].description;
+    if (!dayCast[currentDayCast]) {
+      dayCast[currentDayCast] = 0;
+    }
+
+    dayCast[currentDayCast] = dayCast[currentDayCast] + 1;
+
+    j += 1;
+  }
+
+  return Object.keys(dayCast).reduce((a, b) =>
+    dayCast[a] > dayCast[b] ? a : b
+  );
+};
+
+const extractCurrentDayData = (currentDayData) => {
+  let y = 0;
+  let dayTotalTemp = 0;
+  let dayTotalPressure = 0;
+  let dayTotalHumidity = 0;
+  const dayWeather = {};
+
+  while (y < currentDayData.length) {
+    dayTotalTemp += currentDayData[y].main.temp;
+    dayTotalPressure += currentDayData[y].main.pressure;
+    dayTotalHumidity += currentDayData[y].main.humidity;
+    const currentDayMain = currentDayData[y].weather[0].main;
+
+    if (!dayWeather[currentDayMain]) {
+      dayWeather[currentDayMain] = 0;
+    }
+
+    dayWeather[currentDayMain] = dayWeather[currentDayMain] + 1;
+
+    y += 1;
+  }
+
+  return {
+    dayTotalTemp,
+    dayTotalPressure,
+    dayTotalHumidity,
+    overallCast: Object.keys(dayWeather).reduce((a, b) =>
+      dayWeather[a] > dayWeather[b] ? a : b
+    ),
+  };
 };
