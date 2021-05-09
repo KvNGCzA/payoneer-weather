@@ -32,32 +32,33 @@ const Card = ({
 }) => {
   return (
     <div
+      data-testid="parent-container"
       className={`card${isActive ? " active" : ""}`}
       onClick={handleCardClick}
     >
       <div className="outline"></div>
       <div className="details">
-        <p className="state">{state}</p>
-        <p className="date">{date}</p>
-        <p className="temp">
+        <p className="state" data-testid="state">{state}</p>
+        <p className="date" data-testid="date">{date}</p>
+        <p className="temp" data-testid="temp">
           {temp}
-          <sup className="degrees">o</sup>
-          <sup className="unit">{unit === "metric" ? "C" : "F"}</sup>
+          <sup className="degrees" data-testid="degrees">o</sup>
+          <sup className="unit" data-testid="unit">{unit === "metric" ? "C" : "F"}</sup>
         </p>
         <div className="bottom">
           <div className="bottom-item">
             <span>pressure</span>
-            <span>{pressure} hPa</span>
+            <span data-testid="pressure">{pressure} hPa</span>
           </div>
           <div className="bottom-item">
             <span>humidity</span>
-            <span>{humidity}%</span>
+            <span data-testid="humidity">{humidity}%</span>
           </div>
         </div>
       </div>
       <div className="additional">
         <p>{overcast}</p>
-        <img src={icons[overall.toLowerCase()]} alt="weather" />
+        <img src={icons[overall.toLowerCase()]} alt="weather" data-testid="card-image"/>
       </div>
     </div>
   );
