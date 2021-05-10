@@ -2,33 +2,15 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import "./Main.scss";
 import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  FormControlLabel,
-  RadioGroup,
-  Tooltip,
-  Radio,
-} from "@material-ui/core";
-import Chart from "../Chart/Chart";
-import Pagination from "../Pagination/Pagination";
-import {
   FETCH_WEATHER_REQUESTED,
   TOGGLE_LOADING,
 } from "../../reducers/constants";
-import Card from "../Card/Card";
-import Loader from "../Loader/Loader";
-
-const regions = [
-  "Berlin",
-  "Munich",
-  "Hamburg",
-  "Leipzig",
-  "Dresden",
-  "Heidelberg",
-  "Stuttgart",
-];
+import BarChart from "../barChart/BarChart";
+import Pagination from "../pagination/Pagination";
+import Card from "../card/Card";
+import Loader from "../loader/Loader";
+import RadioButton from "../radioButton/RadioButton";
+import DropdownSelect from "../dropdownSelect/DropdownSelect";
 
 class Main extends Component {
   constructor() {
@@ -42,6 +24,25 @@ class Main extends Component {
       pageCount: 3,
       datasets: null,
       chartDate: null,
+      regions: [
+        "Berlin",
+        "Munich",
+        "Hamburg",
+        "Leipzig",
+        "Dresden",
+        "Heidelberg",
+        "Stuttgart",
+      ],
+      units: [
+        {
+          value: "metric",
+          title: "Celsius",
+        },
+        {
+          value: "imperial",
+          title: "Fahrenheit",
+        },
+      ],
     };
   }
 
@@ -56,13 +57,11 @@ class Main extends Component {
       {
         state: event.target.value,
         pageIndex: 0,
-        unit: "imperial",
       },
       () => {
         this.props.toggleLoading();
         this.props.fetchWeatherData({
           ...this.state,
-          unit: "imperial",
           state: event.target.value,
           successCallback: () =>
             this.setState({ datasets: null, chartDate: null }),
@@ -73,7 +72,7 @@ class Main extends Component {
     );
   };
 
-  handleRadioButtons = (event) => {
+  handleChange = (event) => {
     const { unit } = this.state;
 
     this.setState({ unit: event.target.value }, () => {
@@ -105,18 +104,9 @@ class Main extends Component {
     this.setState({ pageIndex, pageCount });
   };
 
-  handleCardClick = (date, autoScroll = true) => {
-    const { label: oldLabel } = this.state.datasets?.datasets[0] || {};
+  getChartDatasets = ({ date, label }) => {
     const labels = [];
     const data = [];
-    const label = `${date} (${
-      this.state.unit === "imperial" ? "Degrees Fahrenheit" : "Degrees Celsius"
-    })`;
-
-    if (oldLabel === label && date === this.state.chartDate) {
-      return;
-    }
-
     const { fiveDayData } = this.props.weatherData;
     const dayData = fiveDayData[date];
 
@@ -126,7 +116,7 @@ class Main extends Component {
       data.push(currentTime.main.temp);
     });
 
-    const datasets = {
+    return {
       labels,
       datasets: [
         {
@@ -138,11 +128,22 @@ class Main extends Component {
         },
       ],
     };
+  }
+
+  handleCardClick = (date, autoScroll = true) => {
+    const { label: oldLabel } = this.state.datasets?.datasets[0] || {};
+    const label = `${date} (${
+      this.state.unit === "imperial" ? "Degrees Fahrenheit" : "Degrees Celsius"
+    })`;
+
+    if (oldLabel === label && date === this.state.chartDate) {
+      return;
+    }
+
+    const datasets = this.getChartDatasets({ date, label })
 
     this.setState({ datasets, chartDate: date }, () => {
       if (autoScroll) {
-        // scroll to chart after updating
-        // good for mobile users
         window.scroll({
           top: document.body.scrollHeight,
           left: 0,
@@ -150,39 +151,6 @@ class Main extends Component {
         });
       }
     });
-  };
-
-  renderRadioButtons = () => {
-    return (
-      <FormControl
-        component="fieldset"
-        className="custom-fieldset"
-        data-testid="temp-selector"
-      >
-        <RadioGroup
-          aria-label="unit"
-          name="unit"
-          value={this.state.unit}
-          onChange={this.handleRadioButtons}
-          className="custom-radio"
-        >
-          <Tooltip title="Celsius">
-            <FormControlLabel
-              value="metric"
-              control={<Radio />}
-              label="Celsius"
-            />
-          </Tooltip>
-          <Tooltip title="Fahrenheit">
-            <FormControlLabel
-              value="imperial"
-              control={<Radio />}
-              label="Fahrenheit"
-            />
-          </Tooltip>
-        </RadioGroup>
-      </FormControl>
-    );
   };
 
   renderCards() {
@@ -193,26 +161,32 @@ class Main extends Component {
     const end = start + 3;
 
     return (
-      order &&
-      order.slice(start, end).map((current) => {
-        const daily = dailyAverages[current];
+      <div
+        id="cards"
+        className={`cards${this.state.pageCount < 3 ? " underThree" : ""}`}
+        data-testid="cards"
+      >
+        {order &&
+          order.slice(start, end).map((current) => {
+            const daily = dailyAverages[current];
 
-        return (
-          <Card
-            isActive={this.state.chartDate === current}
-            key={current}
-            state={this.state.state}
-            date={current}
-            temp={daily.temp}
-            pressure={daily.pressure}
-            humidity={daily.humidity}
-            overcast={daily.overcast}
-            unit={this.state.unit}
-            overallCast={daily.overallCast}
-            handleCardClick={() => this.handleCardClick(current)}
-          />
-        );
-      })
+            return (
+              <Card
+                isActive={this.state.chartDate === current}
+                key={current}
+                state={this.state.state}
+                date={current}
+                temp={daily.temp}
+                pressure={daily.pressure}
+                humidity={daily.humidity}
+                overcast={daily.overcast}
+                unit={this.state.unit}
+                overallCast={daily.overallCast}
+                handleCardClick={() => this.handleCardClick(current)}
+              />
+            );
+          })}
+      </div>
     );
   }
 
@@ -224,7 +198,54 @@ class Main extends Component {
     );
   };
 
-  renderError = () => {
+  renderChart = () => {
+    return (
+      <div className="chart">
+        {this.state.datasets ? (
+          <BarChart datasets={this.state.datasets} />
+        ) : (
+          this.renderChartPlaceholder()
+        )}
+      </div>
+    );
+  };
+
+  renderFilters = () => {
+    return (
+      <div className="filters">
+        <DropdownSelect
+          regions={this.state.regions}
+          handleSelect={this.handleSelect}
+          value={this.state.state}
+        />
+        <RadioButton
+          value={this.state.unit}
+          handleChange={this.handleChange}
+          units={this.state.units}
+        />
+      </div>
+    );
+  };
+
+  renderSuccessBody = () => {
+    return (
+      <Fragment>
+        {this.renderFilters()}
+
+        <div className="card-parent">
+          {this.renderCards()}
+          <Pagination
+            handlePagination={this.handlePagination}
+            pageIndex={this.state.pageIndex}
+          />
+        </div>
+
+        {this.renderChart()}
+      </Fragment>
+    );
+  };
+
+  renderErrorBody = () => {
     return (
       <p className="error">
         There was a problem fetching the weather data at this moment!!!
@@ -232,89 +253,34 @@ class Main extends Component {
     );
   };
 
-  renderSelect = () => {
-    return (
-      <FormControl className="city-select">
-        <InputLabel htmlFor="grouped-select">City</InputLabel>
-        <Select
-          value={this.state.state}
-          id="grouped-select"
-          onChange={this.handleSelect}
-        >
-          {regions.map((region) => (
-            <MenuItem value={region} key={region}>
-              {region}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    );
-  };
-
   renderBody = () => {
     return (
-      <Fragment>
-        <div className="filters">
-          <div className="location">{this.renderSelect()}</div>
-          <div className="unit">{this.renderRadioButtons()}</div>
+      <div className="main">
+        <div className="content-body">
+          {this.props.weatherData.order && this.props.weatherData.order.length
+            ? this.renderSuccessBody()
+            : this.renderErrorBody()}
         </div>
-
-        <div className="card-parent">
-          <div
-            id="cards"
-            className={`cards${this.state.pageCount < 3 ? " underThree" : ""}`}
-            data-testid="cards"
-          >
-            {this.renderCards()}
-          </div>
-          <Pagination
-            handlePagination={this.handlePagination}
-            pageIndex={this.state.pageIndex}
-          />
-        </div>
-
-        <div className="graph">
-          {this.state.datasets ? (
-            <Chart datasets={this.state.datasets} />
-          ) : (
-            this.renderChartPlaceholder()
-          )}
-        </div>
-      </Fragment>
+      </div>
     );
   };
 
   render() {
-    const body =
-      this.props.weatherData.order && this.props.weatherData.order.length
-        ? this.renderBody()
-        : this.renderError();
-
-    return this.props.loading ? (
-      <Loader />
-    ) : (
-      <div className="main">
-        <div className="content-body">{body}</div>
-      </div>
-    );
+    return this.props.loading ? <Loader /> : this.renderBody();
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    ...state,
-  };
-};
+const mapStateToProps = (state) => ({
+  ...state,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchWeatherData: (data) => {
-      dispatch({ type: FETCH_WEATHER_REQUESTED, data });
-    },
-    toggleLoading: () => {
-      dispatch({ type: TOGGLE_LOADING });
-    },
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  fetchWeatherData: (data) => {
+    dispatch({ type: FETCH_WEATHER_REQUESTED, data });
+  },
+  toggleLoading: () => {
+    dispatch({ type: TOGGLE_LOADING });
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

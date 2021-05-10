@@ -1,7 +1,7 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
 
-export const Chart = ({ datasets }) => {
+export const BarChart = ({ datasets }) => {
   return (
     <Bar
       data={datasets}
@@ -14,4 +14,4 @@ export const Chart = ({ datasets }) => {
   );
 };
 
-export default Chart;
+export default BarChart;
