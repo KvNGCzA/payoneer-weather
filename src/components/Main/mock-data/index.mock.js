@@ -6,7 +6,7 @@ const dailyAverage = {
   temp: 47,
 };
 
-const getEightDataSets = (date) => {
+const getEightDataSets = date => {
   let x = 0;
   const result = [];
   let finalDate = new Date(date).toLocaleDateString();

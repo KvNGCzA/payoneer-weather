@@ -50,7 +50,7 @@ class Main extends Component {
     this.props.fetchWeatherData({ ...this.state });
   }
 
-  handleSelect = (event) => {
+  handleSelect = event => {
     const { region, unit, pageIndex } = this.state;
 
     this.setState(
@@ -72,7 +72,7 @@ class Main extends Component {
     );
   };
 
-  handleChange = (event) => {
+  handleChange = event => {
     const { unit } = this.state;
 
     this.setState({ unit: event.target.value }, () => {
@@ -86,11 +86,11 @@ class Main extends Component {
     });
   };
 
-  handleSelectFailure = (params) => {
+  handleSelectFailure = params => {
     this.setState({ ...params });
   };
 
-  handleRadioFailure = (unit) => {
+  handleRadioFailure = unit => {
     this.setState({ unit });
   };
 
@@ -135,7 +135,7 @@ class Main extends Component {
     const dayData = fiveDayData[date];
 
     // Prepare chart dataset
-    dayData.forEach((currentTime) => {
+    dayData.forEach(currentTime => {
       labels.push(currentTime.dt_txt.split(' ')[1]);
       data.push(currentTime.main.temp);
     });
@@ -169,7 +169,7 @@ class Main extends Component {
         data-testid='cards'
       >
         {order &&
-          order.slice(start, end).map((current) => {
+          order.slice(start, end).map(current => {
             const daily = dailyAverages[current];
 
             return (
@@ -231,7 +231,7 @@ class Main extends Component {
     );
   };
 
-  renderSuccessBody = (props) => {
+  renderSuccessBody = props => {
     return (
       <Fragment>
         {this.renderFilters()}
@@ -249,7 +249,7 @@ class Main extends Component {
     );
   };
 
-  renderErrorBody = (order) => {
+  renderErrorBody = order => {
     return (
       <p className='error'>
         {!order
@@ -259,7 +259,7 @@ class Main extends Component {
     );
   };
 
-  renderBody = (props) => {
+  renderBody = props => {
     const { order } = props.weatherData;
 
     return (
@@ -278,10 +278,10 @@ class Main extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ ...state });
+const mapStateToProps = state => ({ ...state });
 
-const mapDispatchToProps = (dispatch) => ({
-  fetchWeatherData: (data) => {
+const mapDispatchToProps = dispatch => ({
+  fetchWeatherData: data => {
     dispatch({ type: FETCH_WEATHER_REQUESTED, data });
   },
   toggleLoading: () => {

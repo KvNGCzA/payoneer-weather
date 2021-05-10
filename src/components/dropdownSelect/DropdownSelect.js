@@ -7,7 +7,7 @@ const DropdownSelect = ({ value, regions, handleSelect }) => {
       <FormControl className='city-select'>
         <InputLabel htmlFor='grouped-select'>City</InputLabel>
         <Select value={value} id='grouped-select' onChange={handleSelect}>
-          {regions.map((region) => (
+          {regions.map(region => (
             <MenuItem value={region} key={region}>
               {region}
             </MenuItem>

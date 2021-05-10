@@ -22,7 +22,7 @@ const RadioButton = ({ value, handleChange, units }) => {
           onChange={handleChange}
           className='custom-radio'
         >
-          {units.map((unit) => (
+          {units.map(unit => (
             <Tooltip title={unit.title} key={unit.title}>
               <FormControlLabel
                 value={unit.value}
