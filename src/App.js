@@ -1,8 +1,8 @@
-import { Fragment } from "react";
-import Main from "./components/main/Main";
-import Header from "./components/header/Header";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Fragment } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Main from './components/main/Main';
+import Header from './components/header/Header';
 
 function App() {
   return (

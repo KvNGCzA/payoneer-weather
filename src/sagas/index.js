@@ -1,10 +1,10 @@
-import { call, put, takeLatest } from "redux-saga/effects";
-import { fetchWeatherData } from "../api";
+import { call, put, takeLatest } from 'redux-saga/effects';
+import { fetchWeatherData } from '../api';
 import {
   FETCH_WEATHER_FAILED,
   FETCH_WEATHER_REQUESTED,
   FETCH_WEATHER_SUCCESS,
-} from "../reducers/constants";
+} from '../reducers/constants';
 
 function* fetchWeather(action) {
   const data = yield call(fetchWeatherData, action.data);

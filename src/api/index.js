@@ -1,10 +1,10 @@
-import axios from "axios";
-import { toast } from "react-toastify";
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export const fetchWeatherData = async (data) => {
   try {
     const response = await axios.get(
-      `http://api.openweathermap.org/data/2.5/forecast?q=${data.state},${data.countryCode}&units=${data.unit}&APPID=75f972b80e26f14fe6c920aa6a85ad57&cnt=40`
+      `http://api.openweathermap.org/data/2.5/forecast?q=${data.region},${data.countryCode}&units=${data.unit}&APPID=75f972b80e26f14fe6c920aa6a85ad57&cnt=40`
     );
     const fiveDayData = {};
     const order = [];
@@ -26,7 +26,11 @@ export const fetchWeatherData = async (data) => {
       dailyAverages: getDailyAverages(order, fiveDayData),
     };
   } catch (error) {
-    toast.error("Error fetching weather data");
+    toast.error(
+      window.navigator.onLine
+        ? 'Error fetching weather data, please try again'
+        : 'Please check your internet connection'
+    );
   }
 };
 

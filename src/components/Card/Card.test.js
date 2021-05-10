@@ -1,27 +1,27 @@
-import React from 'react'
-import { fireEvent, render, cleanup } from "@testing-library/react";
-import Card from "./Card";
+import React from 'react';
+import { fireEvent, render, cleanup } from '@testing-library/react';
+import Card from './Card';
 
 const defaultProps = {
-  state: "Munich",
-  date: "21 May 2021",
+  state: 'Munich',
+  date: '21 May 2021',
   temp: 22,
   pressure: 100,
   humidity: 200,
-  overcast: "clear skies",
-  unit: "metric",
-  overallCast: "Clouds",
+  overcast: 'clear skies',
+  unit: 'metric',
+  overallCast: 'Clouds',
   handleCardClick: jest.fn(),
   isActive: false,
 };
 
-describe("Render Card Component", () => {
+describe('Render Card Component', () => {
   afterEach(cleanup);
 
-  it("should call handleCardClick when user clicks anywhere in card", () => {
+  it('should call handleCardClick when user clicks anywhere in card', () => {
     // Act
     const { getByTestId } = render(<Card {...defaultProps} />);
-    const element = getByTestId("parent-container");
+    const element = getByTestId('parent-container');
 
     // Act
     fireEvent.click(element);
@@ -30,69 +30,69 @@ describe("Render Card Component", () => {
     expect(defaultProps.handleCardClick).toHaveBeenCalled();
   });
 
-  it("should not contain class of active when isActive is false in props", () => {
+  it('should not contain class of active when isActive is false in props', () => {
     // Act
     const { getByTestId } = render(<Card {...defaultProps} />);
-    const element = getByTestId("parent-container");
-    const cardParentClass = element.getAttribute("class");
+    const element = getByTestId('parent-container');
+    const cardParentClass = element.getAttribute('class');
 
     // Assert
-    expect(cardParentClass).toEqual("card");
+    expect(cardParentClass).toEqual('card');
   });
 
-  it("should render pressure text correctly", () => {
+  it('should render pressure text correctly', () => {
     // Act
     const { getByTestId } = render(<Card {...defaultProps} />);
-    const element = getByTestId("pressure");
+    const element = getByTestId('pressure');
 
     // Assert
-    expect(element.textContent).toEqual("100 hPa");
+    expect(element.textContent).toEqual('100 hPa');
   });
 
-  it("should render humidity text correctly", () => {
+  it('should render humidity text correctly', () => {
     // Act
     const { getByTestId } = render(<Card {...defaultProps} />);
-    const element = getByTestId("humidity");
+    const element = getByTestId('humidity');
 
     // Assert
-    expect(element.textContent).toEqual("200%");
+    expect(element.textContent).toEqual('200%');
   });
 
-  it("should render correct image element for card image", () => {
+  it('should render correct image element for card image', () => {
     // Act
     const { getByTestId } = render(<Card {...defaultProps} />);
-    const element = getByTestId("card-image");
-    const imageLink = element.getAttribute("src");
+    const element = getByTestId('card-image');
+    const imageLink = element.getAttribute('src');
 
     // Assert
-    expect(imageLink).toContain("clouds_day.png");
+    expect(imageLink).toContain('clouds_day.png');
   });
 
-  it("should render unit as C when unit metric", () => {
+  it('should render unit as C when unit metric', () => {
     // Act
     const { getByTestId } = render(<Card {...defaultProps} />);
-    const element = getByTestId("unit");
+    const element = getByTestId('unit');
 
     // Assert
-    expect(element.textContent).toEqual("C");
+    expect(element.textContent).toEqual('C');
   });
 
-  it("should render unit as F when unit imperial", () => {
+  it('should render unit as F when unit imperial', () => {
     // Arrange
     const props = {
       ...defaultProps,
-      unit: "imperial",
+      unit: 'imperial',
     };
 
     // Act
     const { getByTestId } = render(<Card {...props} />);
-    const element = getByTestId("unit");
+    const element = getByTestId('unit');
 
     // Assert
-    expect(element.textContent).toEqual("F");
+    expect(element.textContent).toEqual('F');
   });
 
-  it("should contain class of active when isActive is true in props", () => {
+  it('should contain class of active when isActive is true in props', () => {
     // Arrange
     const props = {
       ...defaultProps,
@@ -101,10 +101,10 @@ describe("Render Card Component", () => {
 
     // Act
     const { getByTestId } = render(<Card {...props} />);
-    const element = getByTestId("parent-container");
-    const cardParentClass = element.getAttribute("class");
+    const element = getByTestId('parent-container');
+    const cardParentClass = element.getAttribute('class');
 
     // Assert
-    expect(cardParentClass).toEqual("card active");
+    expect(cardParentClass).toEqual('card active');
   });
 });

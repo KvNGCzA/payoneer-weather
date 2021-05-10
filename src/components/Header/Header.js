@@ -1,12 +1,12 @@
-import React from "react";
-import logo from "../../assets/images/logo.png";
-import "./Header.scss";
+import React from 'react';
+import logo from '../../assets/images/logo.png';
+import './Header.scss';
 
 const Header = () => {
   return (
     <header>
       <div>
-        <img src={logo} alt="payoneer logo" className="header-logo" />
+        <img src={logo} alt='payoneer logo' className='header-logo' />
       </div>
     </header>
   );

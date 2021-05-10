@@ -1,4 +1,4 @@
-@import "../../assets/styles/_colors";
+@import '../../assets/styles/_colors';
 
 .card {
   align-items: center;
@@ -33,12 +33,12 @@
   .details {
     flex: 1;
 
-    .state {
+    .region {
       font-size: 34px;
       margin: 0.3em 0;
     }
 
-    .state,
+    .region,
     .temp {
       color: $payoneer_grey;
     }
