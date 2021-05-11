@@ -1,7 +1,7 @@
 import { cleanup, fireEvent } from '@testing-library/react';
 import Main from '../Main';
-import render from './Main.test.util';
-import initialState from './mock-data/index.mock';
+import render from '../../../helper/test.util';
+import initialState from './Main.mock';
 
 describe('Render Main', () => {
   afterEach(cleanup);
@@ -61,7 +61,7 @@ describe('Render Main', () => {
     });
     const unit = getAllByTestId('unit')[0];
 
-    // // Assert
+    // Assert
     expect(unit.textContent).toEqual('F');
   });
 
@@ -75,7 +75,7 @@ describe('Render Main', () => {
     // Act
     fireEvent.click(celsiusButton);
 
-    // // Assert
+    // Assert
     const unit = getAllByTestId('unit')[0];
     expect(unit.textContent).toEqual('C');
   });
@@ -131,9 +131,9 @@ describe('Render Main', () => {
     const { getByTestId } = render(<Main />, {
       initialState: { loading: false, weatherData: { dates: [] } },
     });
-
     const failure = getByTestId('failure-text');
 
+    // Assert
     expect(failure.textContent).toEqual(
       'There is no weather data to display at the moment'
     );
@@ -144,9 +144,9 @@ describe('Render Main', () => {
     const { getByTestId } = render(<Main />, {
       initialState: { loading: false, weatherData: {} },
     });
-
     const failure = getByTestId('failure-text');
 
+    // Assert
     expect(failure.textContent).toEqual(
       'There was a problem fetching the weather data at this moment!!!'
     );

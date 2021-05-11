@@ -1,8 +1,8 @@
-import { fetchWeather } from '../index';
+import { fetchWeather } from '../';
 import { expectSaga } from 'redux-saga-test-plan';
-import fetchWeatherData from '../../api/index.js';
+import fetchWeatherData from '../../api';
 
-jest.mock('../../api/index.js', () => jest.fn());
+jest.mock('../../api/', () => jest.fn());
 
 describe('Test sagas', () => {
   it('should put FETCH_WEATHER_SUCCESS when api call is successful', () => {

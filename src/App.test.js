@@ -1,5 +1,5 @@
 import App from './App';
-import render from './components/main/__test__/Main.test.util';
+import render from './helper/test.util';
 
 describe('Render App', () => {
   it('should render without error', () => {
