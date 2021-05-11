@@ -28,6 +28,7 @@ const RadioButton = ({ value, handleChange, units }) => {
                 value={unit.value}
                 control={<Radio />}
                 label={unit.title}
+                data-testid={unit.title}
               />
             </Tooltip>
           ))}

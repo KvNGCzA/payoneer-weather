@@ -55,14 +55,14 @@ const initialState = {
       'Wed May 12 2021': dailyAverage,
       'Thu May 13 2021': dailyAverage,
     },
-    fiveDayData: {
+    allDaysData: {
       'Sun May 09 2021': getEightDataSets('Sun May 09 2021'),
       'Mon May 10 2021': getEightDataSets('Mon May 10 2021'),
       'Tue May 11 2021': getEightDataSets('Tue May 11 2021'),
       'Wed May 12 2021': getEightDataSets('Wed May 12 2021'),
       'Thu May 13 2021': getEightDataSets('Thu May 13 2021'),
     },
-    order: [
+    dates: [
       'Sun May 09 2021',
       'Mon May 10 2021',
       'Tue May 11 2021',

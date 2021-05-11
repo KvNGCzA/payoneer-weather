@@ -40,6 +40,47 @@ describe('Render Main', () => {
     expect(cards.length).toEqual(3);
   });
 
+  it('should render chart when any card is clicked', () => {
+    // Arrange
+    const { getAllByTestId, getByTestId } = render(<Main />, {
+      initialState,
+    });
+    const card = getAllByTestId('parent-container')[0];
+
+    // Act
+    fireEvent.click(card);
+
+    // Assert
+    const chart = getByTestId('chart');
+    expect(chart.textContent).toEqual('chart render');
+  });
+
+  it('should ensure fahrenheit is the default unit', () => {
+    // Act
+    const { getAllByTestId } = render(<Main />, {
+      initialState,
+    });
+    const unit = getAllByTestId('unit')[0];
+
+    // // Assert
+    expect(unit.textContent).toEqual('F');
+  });
+
+  it('should ensure unit changes from Fahrenheit to Celsius', () => {
+    // Arrange
+    const { getByTestId, getAllByTestId } = render(<Main />, {
+      initialState,
+    });
+    const celsiusButton = getByTestId('Celsius');
+
+    // Act
+    fireEvent.click(celsiusButton);
+
+    // // Assert
+    const unit = getAllByTestId('unit')[0];
+    expect(unit.textContent).toEqual('C');
+  });
+
   it('should ensure only next page pagination button is displayed on initial load', () => {
     // Act
     const { getByTestId } = render(<Main />, {
@@ -84,5 +125,31 @@ describe('Render Main', () => {
     // Assert
     expect(allCards.length).toEqual(2);
     expect(cardParent.getAttribute('class')).toEqual('cards underThree');
+  });
+
+  it('should render error message when empty data is returned from api', () => {
+    // Arrange
+    const { getByTestId } = render(<Main />, {
+      initialState: { loading: false, weatherData: { dates: [] } },
+    });
+
+    const failure = getByTestId('failure-text');
+
+    expect(failure.textContent).toEqual(
+      'There is no weather data to display at the moment'
+    );
+  });
+
+  it('should render error message when api fails and data is null', () => {
+    // Arrange
+    const { getByTestId } = render(<Main />, {
+      initialState: { loading: false, weatherData: {} },
+    });
+
+    const failure = getByTestId('failure-text');
+
+    expect(failure.textContent).toEqual(
+      'There was a problem fetching the weather data at this moment!!!'
+    );
   });
 });

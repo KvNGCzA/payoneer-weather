@@ -51,7 +51,7 @@ class Main extends Component {
   }
 
   handleSelect = event => {
-    const { region, unit, pageIndex } = this.state;
+    const { region, pageIndex } = this.state;
 
     this.setState(
       {
@@ -65,8 +65,7 @@ class Main extends Component {
           region: event.target.value,
           successCallback: () =>
             this.setState({ datasets: null, chartDate: null }),
-          failureCallback: () =>
-            this.handleSelectFailure({ region, unit, pageIndex }),
+          failureCallback: () => this.setState({ region, pageIndex }),
         });
       }
     );
@@ -81,25 +80,16 @@ class Main extends Component {
         ...this.state,
         unit: event.target.value,
         successCallback: this.handleCardClick,
-        failureCallback: () => this.handleRadioFailure(unit),
+        failureCallback: () => this.setState({ unit }),
       });
     });
   };
 
-  handleSelectFailure = params => {
-    this.setState({ ...params });
-  };
-
-  handleRadioFailure = unit => {
-    this.setState({ unit });
-  };
-
   handlePagination = () => {
-    const { order } = this.props.weatherData;
     const pageIndex = this.state.pageIndex ? 0 : 1;
     const start = pageIndex ? 3 : 0;
     const end = start + 3;
-    const { length: pageCount } = order.slice(start, end);
+    const { length: pageCount } = this.props.dates.slice(start, end);
 
     this.setState({ pageIndex, pageCount });
   };
@@ -131,8 +121,7 @@ class Main extends Component {
   generateChartDatasets = ({ date, label }) => {
     const labels = [];
     const data = [];
-    const { fiveDayData } = this.props.weatherData;
-    const dayData = fiveDayData[date];
+    const dayData = this.props.allDaysData[date];
 
     // Prepare chart dataset
     dayData.forEach(currentTime => {
@@ -154,8 +143,7 @@ class Main extends Component {
     };
   };
 
-  renderCards({ weatherData }) {
-    const { order, dailyAverages } = weatherData;
+  renderCards({ dates, dailyAverages }) {
     const { chartDate, region, unit, pageIndex, pageCount } = this.state;
 
     // Determine what page cards should start from
@@ -168,23 +156,23 @@ class Main extends Component {
         className={`cards${pageCount < 3 ? ' underThree' : ''}`}
         data-testid='cards'
       >
-        {order &&
-          order.slice(start, end).map(current => {
-            const daily = dailyAverages[current];
+        {dates &&
+          dates.slice(start, end).map(date => {
+            const day = dailyAverages[date];
 
             return (
               <Card
-                isActive={chartDate === current}
-                key={current}
+                isActive={chartDate === date}
+                key={date}
                 region={region}
-                date={current}
-                temp={daily.temp}
-                pressure={daily.pressure}
-                humidity={daily.humidity}
-                overcast={daily.overcast}
+                date={date}
+                temp={day.temp}
+                pressure={day.pressure}
+                humidity={day.humidity}
+                overcast={day.overcast}
                 unit={unit}
-                overallCast={daily.overallCast}
-                handleCardClick={() => this.handleCardClick(current)}
+                overallCast={day.overallCast}
+                handleCardClick={() => this.handleCardClick(date)}
               />
             );
           })}
@@ -195,14 +183,16 @@ class Main extends Component {
   renderChartPlaceholder = () => {
     return (
       <div className='chart-placeholder'>
-        <p>Please click on a weather card to see the days statistics</p>
+        <p data-testid='chart-placeholder'>
+          Please click on a weather card to see the days statistics
+        </p>
       </div>
     );
   };
 
   renderChart = () => {
     return (
-      <div className='chart'>
+      <div className='chart' data-testid='chart'>
         {this.state.datasets ? (
           <BarChart datasets={this.state.datasets} />
         ) : (
@@ -249,10 +239,10 @@ class Main extends Component {
     );
   };
 
-  renderErrorBody = order => {
+  renderFailureBody = dates => {
     return (
-      <p className='error'>
-        {!order
+      <p className='error' data-testid='failure-text'>
+        {!dates
           ? 'There was a problem fetching the weather data at this moment!!!'
           : 'There is no weather data to display at the moment'}
       </p>
@@ -260,14 +250,14 @@ class Main extends Component {
   };
 
   renderBody = props => {
-    const { order } = props.weatherData;
+    const { dates } = props;
 
     return (
       <div className='main'>
         <div className='content-body'>
-          {order && order.length
+          {dates && dates.length
             ? this.renderSuccessBody(props)
-            : this.renderErrorBody(order)}
+            : this.renderFailureBody(dates)}
         </div>
       </div>
     );
@@ -278,7 +268,12 @@ class Main extends Component {
   }
 }
 
-const mapStateToProps = state => ({ ...state });
+const mapStateToProps = ({ loading, weatherData }) => ({
+  loading,
+  dates: weatherData.dates,
+  allDaysData: weatherData.allDaysData,
+  dailyAverages: weatherData.dailyAverages,
+});
 
 const mapDispatchToProps = dispatch => ({
   fetchWeatherData: data => {

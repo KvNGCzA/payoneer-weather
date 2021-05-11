@@ -12,6 +12,7 @@ const render = (
   } = {}
 ) => {
   function Wrapper({ children }) {
+    store.dispatch = jest.fn();
     return <Provider store={store}>{children}</Provider>;
   }
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });

@@ -1,29 +1,19 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-export const fetchWeatherData = async (data) => {
+export const fetchWeatherData = async data => {
   try {
     const response = await axios.get(
       `http://api.openweathermap.org/data/2.5/forecast?q=${data.region},${data.countryCode}&units=${data.unit}&APPID=75f972b80e26f14fe6c920aa6a85ad57&cnt=40`
     );
-    const fiveDayData = {};
-    const order = [];
 
-    response.data.list.forEach((current) => {
-      const currentDate = new Date(current.dt_txt).toDateString();
-
-      if (!fiveDayData[currentDate]) {
-        order.push(currentDate);
-        fiveDayData[currentDate] = [];
-      }
-
-      fiveDayData[currentDate].push(current);
-    });
+    const allDaysData = getAllDaysData(response.data.list);
+    const dates = Object.keys(allDaysData || {});
 
     return {
-      fiveDayData,
-      order,
-      dailyAverages: getDailyAverages(order, fiveDayData),
+      allDaysData,
+      dates,
+      dailyAverages: getDailyAverages({ dates, allDaysData }),
     };
   } catch (error) {
     toast.error(
@@ -34,20 +24,36 @@ export const fetchWeatherData = async (data) => {
   }
 };
 
-const getDailyAverages = (order, fiveDayData) => {
+const getAllDaysData = data => {
+  const allDaysData = {};
+
+  data.forEach(current => {
+    const currentDate = new Date(current.dt_txt).toDateString();
+
+    if (!allDaysData[currentDate]) {
+      allDaysData[currentDate] = [];
+    }
+
+    allDaysData[currentDate].push(current);
+  });
+
+  return allDaysData;
+};
+
+const getDailyAverages = ({ dates, allDaysData }) => {
   const dailyAverages = {};
 
-  for (let x = 0; x < order.length; x += 1) {
-    const key = order[x];
-    const currentDayData = fiveDayData[key];
-    const numOfData = fiveDayData[key].length;
+  for (let x = 0; x < dates.length; x += 1) {
+    const key = dates[x];
+    const currentDayData = allDaysData[key];
+    const numOfData = allDaysData[key].length;
 
     const {
       dayTotalTemp,
       dayTotalPressure,
       dayTotalHumidity,
       overallCast,
-    } = extractCurrentDayData(currentDayData);
+    } = extractDayData(currentDayData);
 
     const overcast = getOvercast({ currentDayData, overallCast });
 
@@ -64,15 +70,15 @@ const getDailyAverages = (order, fiveDayData) => {
 };
 
 const getOvercast = ({ currentDayData, overallCast }) => {
-  const filteredDay = currentDayData.filter(
-    (current) => current.weather[0].main === overallCast
+  const filteredDays = currentDayData.filter(
+    current => current.weather[0].main === overallCast
   );
 
   let j = 0;
   const dayCast = {};
 
-  while (j < filteredDay.length) {
-    const currentDayCast = filteredDay[j].weather[0].description;
+  while (j < filteredDays.length) {
+    const currentDayCast = filteredDays[j].weather[0].description;
     if (!dayCast[currentDayCast]) {
       dayCast[currentDayCast] = 0;
     }
@@ -87,7 +93,7 @@ const getOvercast = ({ currentDayData, overallCast }) => {
   );
 };
 
-const extractCurrentDayData = (currentDayData) => {
+const extractDayData = currentDayData => {
   let y = 0;
   let dayTotalTemp = 0;
   let dayTotalPressure = 0;
