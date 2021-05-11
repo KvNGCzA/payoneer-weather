@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-export const fetchWeatherData = async data => {
+const fetchWeatherData = async data => {
   try {
     const response = await axios.get(
       `http://api.openweathermap.org/data/2.5/forecast?q=${data.region},${data.countryCode}&units=${data.unit}&APPID=75f972b80e26f14fe6c920aa6a85ad57&cnt=40`
@@ -124,3 +124,5 @@ const extractDayData = currentDayData => {
     ),
   };
 };
+
+export default fetchWeatherData;

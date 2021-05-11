@@ -1,0 +1,41 @@
+import { fetchWeather } from './index';
+import { expectSaga } from 'redux-saga-test-plan';
+import fetchWeatherData from '../api/index.js';
+
+jest.mock('../api/index.js', () => jest.fn());
+
+describe('Test sagas', () => {
+  it('should put FETCH_WEATHER_SUCCESS when api call is successful', () => {
+    // Arrange
+    fetchWeatherData.mockResolvedValue('success');
+
+    // Act & Assert
+    return expectSaga(fetchWeather, {
+      data: {
+        region: 'Munich',
+        unit: 'imperial',
+        countryCode: 'de',
+        chartDate: true,
+        successCallback: jest.fn(),
+      },
+    })
+      .put({
+        type: 'FETCH_WEATHER_SUCCESS',
+        data: 'success',
+      })
+      .run(false);
+  });
+
+  it('should put FETCH_WEATHER_FAILED when api call fails', () => {
+    return (
+      // Act & Assert
+      expectSaga(fetchWeather, {
+        data: { failureCallback: jest.fn() },
+      })
+        .put({
+          type: 'FETCH_WEATHER_FAILED',
+        })
+        .run(false)
+    );
+  });
+});
