@@ -1,18 +1,19 @@
-import React, { Component, Fragment } from 'react';
+import { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import './Main.scss';
+
+import './Landing.scss';
+import BarChart from '../barChart/BarChart';
+import Card from '../card/Card';
+import DropdownSelect from '../dropdownSelect/DropdownSelect';
+import Loader from '../loader/Loader';
+import Pagination from '../pagination/Pagination';
+import RadioButton from '../radioButton/RadioButton';
 import {
   FETCH_WEATHER_REQUESTED,
   TOGGLE_LOADING,
 } from '../../reducers/constants';
-import BarChart from '../barChart/BarChart';
-import Pagination from '../pagination/Pagination';
-import Card from '../card/Card';
-import Loader from '../loader/Loader';
-import RadioButton from '../radioButton/RadioButton';
-import DropdownSelect from '../dropdownSelect/DropdownSelect';
 
-class Main extends Component {
+class Landing extends Component {
   constructor() {
     super();
 
@@ -284,4 +285,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(Landing);

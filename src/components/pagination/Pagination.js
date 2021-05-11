@@ -7,9 +7,7 @@ const Pagination = ({ handlePagination, pageIndex }) => {
       <button
         data-testid='prev-button'
         onClick={handlePagination}
-        style={{
-          visibility: pageIndex ? 'visible' : 'hidden',
-        }}
+        className={pageIndex ? '' : 'hidden'}
       >
         <img src={chevronLeft} alt='chevron left' />
         Prev page
@@ -17,9 +15,7 @@ const Pagination = ({ handlePagination, pageIndex }) => {
       <button
         data-testid='next-button'
         onClick={handlePagination}
-        style={{
-          visibility: !pageIndex ? 'visible' : 'hidden',
-        }}
+        className={!pageIndex ? '' : 'hidden'}
       >
         Next page
         <img src={chevronRight} alt='chevron right' />

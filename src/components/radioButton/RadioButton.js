@@ -1,9 +1,9 @@
 import {
   FormControl,
   FormControlLabel,
+  Radio,
   RadioGroup,
   Tooltip,
-  Radio,
 } from '@material-ui/core';
 
 const RadioButton = ({ value, handleChange, units }) => {

@@ -1,7 +1,7 @@
 import {
+  FETCH_WEATHER_FAILED,
   FETCH_WEATHER_SUCCESS,
   TOGGLE_LOADING,
-  FETCH_WEATHER_FAILED,
 } from './constants';
 
 const initialState = {

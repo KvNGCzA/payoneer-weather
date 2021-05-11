@@ -29,7 +29,8 @@ const Loader = () => {
           <div className='gradient loader-bar'></div>
           <div className='gradient loader-bar'></div>
           <div className='gradient loader-bar'></div>
-          <div className='gradient loader-bar'></div>
+          <div className='gradient x-axis'></div>
+          <div className='gradient y-axis'></div>
         </div>
       </div>
     </div>

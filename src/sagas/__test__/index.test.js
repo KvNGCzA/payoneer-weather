@@ -1,5 +1,6 @@
-import { fetchWeather } from '../';
 import { expectSaga } from 'redux-saga-test-plan';
+
+import { fetchWeather } from '../';
 import fetchWeatherData from '../../api';
 
 jest.mock('../../api/', () => jest.fn());

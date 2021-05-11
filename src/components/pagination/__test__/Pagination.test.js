@@ -1,4 +1,5 @@
-import { fireEvent, render, cleanup } from '@testing-library/react';
+import { cleanup, fireEvent, render } from '@testing-library/react';
+
 import Pagination from '../Pagination';
 
 const defaultProps = {
@@ -6,7 +7,7 @@ const defaultProps = {
   pageIndex: 0,
 };
 
-describe('Render Pagination', () => {
+describe('Pagination Component', () => {
   afterEach(cleanup);
 
   it('should not display previous button and should display next button when pageIndex is 0', () => {
@@ -16,8 +17,8 @@ describe('Render Pagination', () => {
     const nextBtnElement = getByTestId('next-button');
 
     // Assert
-    expect(prevBtnElement.style.visibility).toEqual('hidden');
-    expect(nextBtnElement.style.visibility).toEqual('visible');
+    expect(prevBtnElement.className).toEqual('hidden');
+    expect(nextBtnElement.className).toEqual('');
   });
 
   it('should display prev button and should not display next button when pageIndex is 1', () => {
@@ -30,8 +31,8 @@ describe('Render Pagination', () => {
     const nextBtnElement = getByTestId('next-button');
 
     // Assert
-    expect(prevBtnElement.style.visibility).toEqual('visible');
-    expect(nextBtnElement.style.visibility).toEqual('hidden');
+    expect(prevBtnElement.className).toEqual('');
+    expect(nextBtnElement.className).toEqual('hidden');
   });
 
   it('should trigger handlePagination when next button is clicked', () => {

@@ -1,4 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+
 import fetchWeatherData from '../api';
 import {
   FETCH_WEATHER_FAILED,

@@ -1,4 +1,5 @@
-import { fireEvent, render, cleanup } from '@testing-library/react';
+import { cleanup, fireEvent, render } from '@testing-library/react';
+
 import Card from '../Card';
 
 const defaultProps = {
@@ -14,7 +15,7 @@ const defaultProps = {
   isActive: false,
 };
 
-describe('Render Card Component', () => {
+describe('Card Component', () => {
   afterEach(cleanup);
 
   it('should call handleCardClick when user clicks anywhere in card', () => {

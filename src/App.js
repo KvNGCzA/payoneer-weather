@@ -1,7 +1,8 @@
 import { Fragment } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Main from './components/main/Main';
+
+import Landing from './components/landing/Landing';
 import Header from './components/header/Header';
 
 function App() {
@@ -9,7 +10,7 @@ function App() {
     <Fragment>
       <ToastContainer />
       <Header />
-      <Main />
+      <Landing />
     </Fragment>
   );
 }
