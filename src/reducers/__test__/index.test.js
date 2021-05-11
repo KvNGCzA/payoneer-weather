@@ -1,5 +1,5 @@
-import { FETCH_WEATHER_FAILED, FETCH_WEATHER_SUCCESS, TOGGLE_LOADING } from './constants';
-import reducer from './index';
+import { FETCH_WEATHER_FAILED, FETCH_WEATHER_SUCCESS, TOGGLE_LOADING } from '../constants';
+import reducer from '../index';
 
 const initialState = {
   weatherData: {},

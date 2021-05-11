@@ -1,4 +1,3 @@
-import React from 'react';
 import './Card.scss';
 import thunderstorm from '../../assets/icons/thunderstorm_day.png';
 import clear from '../../assets/icons/clear_day.png';

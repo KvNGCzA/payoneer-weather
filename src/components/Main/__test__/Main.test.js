@@ -1,6 +1,5 @@
-import React from 'react';
 import { cleanup, fireEvent } from '@testing-library/react';
-import Main from './Main';
+import Main from '../Main';
 import render from './Main.test.util';
 import initialState from './mock-data/index.mock';
 

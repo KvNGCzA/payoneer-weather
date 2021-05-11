@@ -1,6 +1,5 @@
-import React from 'react';
 import { fireEvent, render, cleanup } from '@testing-library/react';
-import Pagination from './Pagination';
+import Pagination from '../Pagination';
 
 const defaultProps = {
   handlePagination: jest.fn(),

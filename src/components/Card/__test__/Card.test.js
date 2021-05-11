@@ -1,6 +1,5 @@
-import React from 'react';
 import { fireEvent, render, cleanup } from '@testing-library/react';
-import Card from './Card';
+import Card from '../Card';
 
 const defaultProps = {
   state: 'Munich',

@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
 import { render as rtlRender } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import reducer from '../../reducers/index';
+import reducer from '../../../reducers/index';
 
 const render = (
   ui,

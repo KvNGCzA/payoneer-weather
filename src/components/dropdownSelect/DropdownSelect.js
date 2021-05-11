@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core';
 
 const DropdownSelect = ({ value, regions, handleSelect }) => {
