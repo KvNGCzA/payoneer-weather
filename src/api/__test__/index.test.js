@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+
 import fetchWeatherData from '../';
 import { successResponse, expectedSuccessResult } from './index.mock';
 

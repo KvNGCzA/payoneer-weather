@@ -181,27 +181,23 @@ class Landing extends Component {
     );
   }
 
-  renderChartPlaceholder = () => {
-    return (
-      <div className='chart-placeholder'>
-        <p data-testid='chart-placeholder'>
-          Please click on a weather card to see the days statistics
-        </p>
-      </div>
-    );
-  };
+  renderChartPlaceholder = () => (
+    <div className='chart-placeholder'>
+      <p data-testid='chart-placeholder'>
+        Please click on a weather card to see the days statistics
+      </p>
+    </div>
+  );
 
-  renderChart = () => {
-    return (
-      <div className='chart' data-testid='chart'>
-        {this.state.datasets ? (
-          <BarChart datasets={this.state.datasets} />
-        ) : (
-          this.renderChartPlaceholder()
-        )}
-      </div>
-    );
-  };
+  renderChart = () => (
+    <div className='chart' data-testid='chart'>
+      {this.state.datasets ? (
+        <BarChart datasets={this.state.datasets} />
+      ) : (
+        this.renderChartPlaceholder()
+      )}
+    </div>
+  );
 
   renderFilters = () => {
     const { regions, region, unit, units } = this.state;
@@ -222,33 +218,29 @@ class Landing extends Component {
     );
   };
 
-  renderSuccessBody = props => {
-    return (
-      <Fragment>
-        {this.renderFilters()}
+  renderSuccessBody = props => (
+    <Fragment>
+      {this.renderFilters()}
 
-        <div className='card-parent'>
-          {this.renderCards(props)}
-          <Pagination
-            handlePagination={this.handlePagination}
-            pageIndex={this.state.pageIndex}
-          />
-        </div>
+      <div className='card-parent'>
+        {this.renderCards(props)}
+        <Pagination
+          handlePagination={this.handlePagination}
+          pageIndex={this.state.pageIndex}
+        />
+      </div>
 
-        {this.renderChart()}
-      </Fragment>
-    );
-  };
+      {this.renderChart()}
+    </Fragment>
+  );
 
-  renderFailureBody = dates => {
-    return (
-      <p className='error' data-testid='failure-text'>
-        {!dates
-          ? 'There was a problem fetching the weather data at this moment!!!'
-          : 'There is no weather data to display at the moment'}
-      </p>
-    );
-  };
+  renderFailureBody = dates => (
+    <p className='error' data-testid='failure-text'>
+      {!dates
+        ? 'There was a problem fetching the weather data at this moment!!!'
+        : 'There is no weather data to display at the moment'}
+    </p>
+  );
 
   renderBody = props => {
     const { dates } = props;
