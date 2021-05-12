@@ -40,6 +40,22 @@ describe('Card Component', () => {
     expect(cardParentClass).toEqual('card');
   });
 
+  it('should contain class of active when isActive is true in props', () => {
+    // Arrange
+    const props = {
+      ...defaultProps,
+      isActive: true,
+    };
+
+    // Act
+    const { getByTestId } = render(<Card {...props} />);
+    const element = getByTestId('parent-container');
+    const cardParentClass = element.getAttribute('class');
+
+    // Assert
+    expect(cardParentClass).toEqual('card active');
+  });
+
   it('should render pressure text correctly', () => {
     // Act
     const { getByTestId } = render(<Card {...defaultProps} />);
@@ -90,21 +106,5 @@ describe('Card Component', () => {
 
     // Assert
     expect(element.textContent).toEqual('F');
-  });
-
-  it('should contain class of active when isActive is true in props', () => {
-    // Arrange
-    const props = {
-      ...defaultProps,
-      isActive: true,
-    };
-
-    // Act
-    const { getByTestId } = render(<Card {...props} />);
-    const element = getByTestId('parent-container');
-    const cardParentClass = element.getAttribute('class');
-
-    // Assert
-    expect(cardParentClass).toEqual('card active');
   });
 });

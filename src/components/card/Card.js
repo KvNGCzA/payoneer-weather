@@ -28,51 +28,49 @@ const Card = ({
   overallCast,
   handleCardClick,
   isActive,
-}) => {
-  return (
-    <div
-      data-testid='parent-container'
-      className={`card${isActive ? ' active' : ''}`}
-      onClick={handleCardClick}
-    >
-      <div className='outline'></div>
-      <div className='details'>
-        <p className='region' data-testid='region'>
-          {region}
-        </p>
-        <p className='date' data-testid='date'>
-          {date}
-        </p>
-        <p className='temp' data-testid='temp'>
-          {temp}
-          <sup className='degrees' data-testid='degrees'>
-            o
-          </sup>
-          <sup className='unit' data-testid='unit'>
-            {unit === 'metric' ? 'C' : 'F'}
-          </sup>
-        </p>
-        <div className='bottom'>
-          <div className='bottom-item'>
-            <span>pressure</span>
-            <span data-testid='pressure'>{pressure} hPa</span>
-          </div>
-          <div className='bottom-item'>
-            <span>humidity</span>
-            <span data-testid='humidity'>{humidity}%</span>
-          </div>
+}) => (
+  <div
+    data-testid='parent-container'
+    className={`card${isActive ? ' active' : ''}`}
+    onClick={handleCardClick}
+  >
+    <div className='outline'></div>
+    <div className='details'>
+      <p className='region' data-testid='region'>
+        {region}
+      </p>
+      <p className='date' data-testid='date'>
+        {date}
+      </p>
+      <p className='temp' data-testid='temp'>
+        {temp}
+        <sup className='degrees' data-testid='degrees'>
+          o
+        </sup>
+        <sup className='unit' data-testid='unit'>
+          {unit === 'metric' ? 'C' : 'F'}
+        </sup>
+      </p>
+      <div className='bottom'>
+        <div className='bottom-item'>
+          <span>pressure</span>
+          <span data-testid='pressure'>{pressure} hPa</span>
+        </div>
+        <div className='bottom-item'>
+          <span>humidity</span>
+          <span data-testid='humidity'>{humidity}%</span>
         </div>
       </div>
-      <div className='additional'>
-        <p>{overcast}</p>
-        <img
-          src={icons[overallCast.toLowerCase()]}
-          alt='weather'
-          data-testid='card-image'
-        />
-      </div>
     </div>
-  );
-};
+    <div className='additional'>
+      <p>{overcast}</p>
+      <img
+        src={icons[overallCast.toLowerCase()]}
+        alt='weather'
+        data-testid='card-image'
+      />
+    </div>
+  </div>
+);
 
 export default Card;

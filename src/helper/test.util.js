@@ -12,10 +12,10 @@ const render = (
     ...renderOptions
   } = {}
 ) => {
-  function Wrapper({ children }) {
-    store.dispatch = jest.fn();
-    return <Provider store={store}>{children}</Provider>;
-  }
+  store.dispatch = jest.fn();
+
+  const Wrapper = ({ children }) => <Provider store={store}>{children}</Provider>;
+
   return rtlRender(ui, { wrapper: Wrapper, ...renderOptions });
 };
 
