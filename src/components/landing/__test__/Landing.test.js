@@ -1,8 +1,10 @@
+import { createStore } from 'redux';
 import { cleanup, fireEvent } from '@testing-library/react';
 
 import initialState from './Landing.mock';
 import Landing from '../Landing';
 import render from '../../../helper/test.util';
+import reducer from '../../../reducers';
 
 describe('Landing Component', () => {
   afterEach(cleanup);
@@ -55,6 +57,22 @@ describe('Landing Component', () => {
     expect(chart.textContent).toEqual('chart rendered');
   });
 
+  it('should render only one chart when any card is clicked twice', () => {
+    // Arrange
+    const { getAllByTestId } = render(<Landing />, {
+      initialState,
+    });
+    const card = getAllByTestId('parent-container')[0];
+
+    // Act
+    fireEvent.click(card);
+    fireEvent.click(card);
+
+    // Assert
+    const chart = getAllByTestId('chart');
+    expect(chart.length).toEqual(1);
+  });
+
   it('should ensure fahrenheit is the default unit', () => {
     // Act
     const { getAllByTestId } = render(<Landing />, {
@@ -66,10 +84,11 @@ describe('Landing Component', () => {
     expect(unit.textContent).toEqual('F');
   });
 
-  it('should ensure unit changes from Fahrenheit to Celsius', () => {
+  it('should call store.dispatch when user changes the unit of temperature', () => {
     // Arrange
-    const { getByTestId, getAllByTestId } = render(<Landing />, {
-      initialState,
+    const store = createStore(reducer, initialState);
+    const { getByTestId } = render(<Landing />, {
+      initialState, store
     });
     const celsiusButton = getByTestId('Celsius');
 
@@ -77,8 +96,7 @@ describe('Landing Component', () => {
     fireEvent.click(celsiusButton);
 
     // Assert
-    const unit = getAllByTestId('unit')[0];
-    expect(unit.textContent).toEqual('C');
+    expect(store.dispatch).toHaveBeenCalled();
   });
 
   it('should ensure only next page pagination button is displayed on initial load', () => {

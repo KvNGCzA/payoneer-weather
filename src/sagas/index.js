@@ -16,16 +16,11 @@ export function* fetchWeather(action) {
       data,
     });
 
-    if (action.data.chartDate && action.data.successCallback) {
-      action.data.successCallback(action.data.chartDate, false);
-    }
+    action.data.successCallback && action.data.successCallback();
   } else {
     yield put({
       type: FETCH_WEATHER_FAILED,
     });
-    if (action.data.failureCallback) {
-      action.data.failureCallback();
-    }
   }
 }
 

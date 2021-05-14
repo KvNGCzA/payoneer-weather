@@ -18,7 +18,7 @@ const fetchWeatherData = async data => {
   } catch (error) {
     toast.error(
       window.navigator.onLine
-        ? 'Error fetching weather data, please try again'
+        ? `${error.message || 'Error fetching weather data, please try again'}`
         : 'Please check your internet connection'
     );
   }

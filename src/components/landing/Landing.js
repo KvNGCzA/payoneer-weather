@@ -52,37 +52,33 @@ class Landing extends Component {
   }
 
   handleSelect = event => {
-    const { region, pageIndex } = this.state;
-
-    this.setState(
-      {
-        region: event.target.value,
-        pageIndex: 0,
-      },
-      () => {
-        this.props.toggleLoading();
-        this.props.fetchWeatherData({
-          ...this.state,
+    this.props.toggleLoading();
+    this.props.fetchWeatherData({
+      ...this.state,
+      region: event.target.value,
+      successCallback: () => {
+        this.setState({
           region: event.target.value,
-          successCallback: () =>
-            this.setState({ datasets: null, chartDate: null }),
-          failureCallback: () => this.setState({ region, pageIndex }),
+          pageIndex: 0,
+          datasets: null,
+          chartDate: null,
+          pageCount: 3,
         });
-      }
-    );
+      },
+    });
   };
 
   handleChange = event => {
-    const { unit } = this.state;
-
-    this.setState({ unit: event.target.value }, () => {
-      this.props.toggleLoading();
-      this.props.fetchWeatherData({
-        ...this.state,
-        unit: event.target.value,
-        successCallback: this.handleCardClick,
-        failureCallback: () => this.setState({ unit }),
-      });
+    this.props.toggleLoading();
+    this.props.fetchWeatherData({
+      ...this.state,
+      unit: event.target.value,
+      successCallback: () => {
+        this.setState({ unit: event.target.value }, () => {
+          this.state.chartDate &&
+            this.handleCardClick(this.state.chartDate, false);
+        });
+      },
     });
   };
 
@@ -263,9 +259,7 @@ class Landing extends Component {
 
 const mapStateToProps = ({ loading, weatherData }) => ({
   loading,
-  dates: weatherData.dates,
-  allDaysData: weatherData.allDaysData,
-  dailyAverages: weatherData.dailyAverages,
+  ...weatherData,
 });
 
 const mapDispatchToProps = dispatch => ({
