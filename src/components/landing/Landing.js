@@ -49,6 +49,8 @@ class Landing extends Component {
 
   componentDidMount() {
     this.props.fetchWeatherData({ ...this.state });
+    const defaultUnit = localStorage.getItem('unit');
+    defaultUnit && this.setState({ unit: defaultUnit });
   }
 
   handleSelect = event => {
@@ -69,16 +71,10 @@ class Landing extends Component {
   };
 
   handleChange = event => {
-    this.props.toggleLoading();
-    this.props.fetchWeatherData({
-      ...this.state,
-      unit: event.target.value,
-      successCallback: () => {
-        this.setState({ unit: event.target.value }, () => {
-          this.state.chartDate &&
-            this.handleCardClick(this.state.chartDate, false);
-        });
-      },
+    this.setState({ unit: event.target.value }, () => {
+      localStorage.setItem('unit', event.target.value);
+      this.state.chartDate &&
+        this.handleCardClick(this.state.chartDate, false);
     });
   };
 
@@ -119,11 +115,12 @@ class Landing extends Component {
     const labels = [];
     const data = [];
     const dayData = this.props.allDaysData[date];
-
+    
     // Prepare chart dataset
     dayData.forEach(currentTime => {
       labels.push(currentTime.dt_txt.split(' ')[1]);
-      data.push(currentTime.main.temp);
+      const temp = this.state.unit === 'metric' ? Math.round((currentTime.main.temp - 32) * 5/9) : currentTime.main.temp
+      data.push(temp);
     });
 
     return {

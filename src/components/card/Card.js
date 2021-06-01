@@ -43,7 +43,7 @@ const Card = ({
         {date}
       </p>
       <p className='temp' data-testid='temp'>
-        {temp}
+        {unit === 'metric' ? Math.round((temp - 32) * 5/9) : temp}
         <sup className='degrees' data-testid='degrees'>
           o
         </sup>
