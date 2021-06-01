@@ -16,11 +16,7 @@ const fetchWeatherData = async data => {
       dailyAverages: getDailyAverages({ dates, allDaysData }),
     };
   } catch (error) {
-    toast.error(
-      window.navigator.onLine
-        ? `${error.message || 'Error fetching weather data, please try again'}`
-        : 'Please check your internet connection'
-    );
+    toast.error(error.message);
   }
 };
 

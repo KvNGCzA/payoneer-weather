@@ -210,7 +210,7 @@ class Landing extends Component {
           handleSelect={this.handleSelect}
           value={region}
         />
-        <div class="refresh-cont">
+        <div className="refresh-cont">
           <button id="refresh-button" onClick={this.handleRefresh}>Refresh</button>
           <RadioButton
             value={unit}
