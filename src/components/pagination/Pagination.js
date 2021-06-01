@@ -1,11 +1,16 @@
 import chevronLeft from '../../assets/icons/chevron-left.svg';
 import chevronRight from '../../assets/icons/chevron-right.svg';
 
-const Pagination = ({ handlePagination, pageIndex }) => (
+const Pagination = ({
+  handlePagination,
+  pageIndex,
+  showLeftArrow,
+  showRightArrow,
+}) => (
   <div className='card-control'>
     <button
       data-testid='prev-button'
-      onClick={handlePagination}
+      onClick={() => handlePagination('prev')}
       className={pageIndex ? '' : 'hidden'}
     >
       <img src={chevronLeft} alt='chevron left' />
@@ -13,8 +18,8 @@ const Pagination = ({ handlePagination, pageIndex }) => (
     </button>
     <button
       data-testid='next-button'
-      onClick={handlePagination}
-      className={!pageIndex ? '' : 'hidden'}
+      onClick={() => handlePagination('next')}
+      className={showRightArrow ? '' : 'hidden'}
     >
       Next page
       <img src={chevronRight} alt='chevron right' />

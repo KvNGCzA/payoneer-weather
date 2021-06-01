@@ -22,9 +22,11 @@ class Landing extends Component {
       region: 'Munich',
       countryCode: 'de',
       pageIndex: 0,
-      pageCount: 3,
+      pageCount: null,
       datasets: null,
       chartDate: null,
+      showLeftArrow: false,
+      showRightArrow: true,
       regions: [
         'Berlin',
         'Munich',
@@ -48,7 +50,22 @@ class Landing extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchWeatherData({ ...this.state });
+    console.log('window.innerWidth ', window.innerWidth);
+    this.setState({ pageCount: window.innerWidth > 600 ? 3 : 1 }, () => {
+      this.props.fetchWeatherData({ ...this.state });
+    });
+
+    window.addEventListener('resize', (e) => {
+      const { innerWidth } = e.target;
+
+      if (innerWidth < 600) {
+        this.setState({ pageCount: 1 });
+      } else if(innerWidth > 600 && innerWidth < 960) {
+        this.setState({ pageCount: 2 });
+      } else {
+        this.setState({ pageCount: 3 });
+      }
+    });
   }
 
   handleSelect = event => {
@@ -62,7 +79,6 @@ class Landing extends Component {
           pageIndex: 0,
           datasets: null,
           chartDate: null,
-          pageCount: 3,
         });
       },
     });
@@ -82,13 +98,22 @@ class Landing extends Component {
     });
   };
 
-  handlePagination = () => {
-    const pageIndex = this.state.pageIndex ? 0 : 1;
-    const start = pageIndex ? 3 : 0;
-    const end = start + 3;
-    const { length: pageCount } = this.props.dates.slice(start, end);
+  handlePagination = action => {
+    const numOfPages = this.props.dates.length / this.state.pageCount;
+    let pageIndex = null;
+    let showRightArrow = true;
 
-    this.setState({ pageIndex, pageCount });
+    if (action === 'next') {
+      pageIndex = this.state.pageIndex + 1;
+    } else {
+      pageIndex = this.state.pageIndex - 1;
+    }
+
+    if (pageIndex === numOfPages - 1) {
+      showRightArrow = false
+    }
+
+    this.setState({ showRightArrow, pageIndex });
   };
 
   handleCardClick = (date, autoScroll = true) => {
@@ -144,8 +169,9 @@ class Landing extends Component {
     const { chartDate, region, unit, pageIndex, pageCount } = this.state;
 
     // Determine what page cards should start from
-    const start = !pageIndex ? pageIndex : 3;
-    const end = start + 3;
+    const start = pageIndex ? pageCount : pageIndex;
+    const end = start + pageCount;
+    console.log(start, end, dates.slice(start, end));
 
     return (
       <div
@@ -223,6 +249,8 @@ class Landing extends Component {
         <Pagination
           handlePagination={this.handlePagination}
           pageIndex={this.state.pageIndex}
+          showLeftArrow={this.state.showLeftArrow}
+          showRightArrow={this.state.showRightArrow}
         />
       </div>
 
