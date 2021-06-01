@@ -54,18 +54,22 @@ class Landing extends Component {
       this.props.fetchWeatherData({ ...this.state });
     });
 
-    window.addEventListener('resize', (e) => {
-      const { innerWidth } = e.target;
-      const { pageCount } = this.state;
+    this.setPageCount();
 
-      if (innerWidth < 600 && pageCount !== 1) {
-        this.setState({ pageCount: 1, pageIndex: 0, showRightArrow: true });
-      } else if(innerWidth > 600 && innerWidth < 960 && pageCount !== 2) {
-        this.setState({ pageCount: 2, pageIndex: 0, showRightArrow: true });
-      } else if (pageCount !== 3 && innerWidth > 960) {
-        this.setState({ pageCount: 3, pageIndex: 0, showRightArrow: true });
-      }
-    });
+    window.addEventListener('resize', this.setPageCount);
+  }
+
+  setPageCount = () => {
+    const { innerWidth } = window;
+    const { pageCount } = this.state;
+
+    if (innerWidth < 600 && pageCount !== 1) {
+      this.setState({ pageCount: 1, pageIndex: 0, showRightArrow: true });
+    } else if(innerWidth > 600 && innerWidth < 960 && pageCount !== 2) {
+      this.setState({ pageCount: 2, pageIndex: 0, showRightArrow: true });
+    } else if (pageCount !== 3 && innerWidth > 960) {
+      this.setState({ pageCount: 3, pageIndex: 0, showRightArrow: true });
+    }
   }
 
   handleSelect = event => {
