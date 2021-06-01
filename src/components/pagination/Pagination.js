@@ -4,7 +4,6 @@ import chevronRight from '../../assets/icons/chevron-right.svg';
 const Pagination = ({
   handlePagination,
   pageIndex,
-  showLeftArrow,
   showRightArrow,
 }) => (
   <div className='card-control'>

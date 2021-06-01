@@ -50,20 +50,20 @@ class Landing extends Component {
   }
 
   componentDidMount() {
-    console.log('window.innerWidth ', window.innerWidth);
     this.setState({ pageCount: window.innerWidth > 600 ? 3 : 1 }, () => {
       this.props.fetchWeatherData({ ...this.state });
     });
 
     window.addEventListener('resize', (e) => {
       const { innerWidth } = e.target;
+      const { pageCount } = this.state;
 
-      if (innerWidth < 600) {
-        this.setState({ pageCount: 1 });
-      } else if(innerWidth > 600 && innerWidth < 960) {
-        this.setState({ pageCount: 2 });
-      } else {
-        this.setState({ pageCount: 3 });
+      if (innerWidth < 600 && pageCount !== 1) {
+        this.setState({ pageCount: 1, pageIndex: 0, showRightArrow: true });
+      } else if(innerWidth > 600 && innerWidth < 960 && pageCount !== 2) {
+        this.setState({ pageCount: 2, pageIndex: 0, showRightArrow: true });
+      } else if (pageCount !== 3 && innerWidth > 960) {
+        this.setState({ pageCount: 3, pageIndex: 0, showRightArrow: true });
       }
     });
   }
@@ -169,9 +169,8 @@ class Landing extends Component {
     const { chartDate, region, unit, pageIndex, pageCount } = this.state;
 
     // Determine what page cards should start from
-    const start = pageIndex ? pageCount : pageIndex;
-    const end = start + pageCount;
-    console.log(start, end, dates.slice(start, end));
+    const start = pageCount * pageIndex;  // 3 * 0 = 0, 3 * 1 = 3, 3 * 2 = 6
+    const end = start + pageCount; // 0 + 3, 3 + 3, 
 
     return (
       <div
