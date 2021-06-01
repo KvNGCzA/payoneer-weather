@@ -195,6 +195,11 @@ class Landing extends Component {
     </div>
   );
 
+  handleRefresh = () => {
+    this.props.toggleLoading();
+    this.props.fetchWeatherData({ ...this.state });
+  };
+
   renderFilters = () => {
     const { regions, region, unit, units } = this.state;
 
@@ -205,11 +210,14 @@ class Landing extends Component {
           handleSelect={this.handleSelect}
           value={region}
         />
-        <RadioButton
-          value={unit}
-          handleChange={this.handleChange}
-          units={units}
-        />
+        <div class="refresh-cont">
+          <button id="refresh-button" onClick={this.handleRefresh}>Refresh</button>
+          <RadioButton
+            value={unit}
+            handleChange={this.handleChange}
+            units={units}
+          />
+        </div>
       </div>
     );
   };
