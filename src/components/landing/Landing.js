@@ -86,9 +86,11 @@ class Landing extends Component {
     const pageIndex = this.state.pageIndex ? 0 : 1;
     const start = pageIndex ? 3 : 0;
     const end = start + 3;
-    const { length: pageCount } = this.props.dates.slice(start, end);
+    const dates = this.props.dates.slice(start, end);
 
-    this.setState({ pageIndex, pageCount });
+    this.setState({ pageIndex, pageCount: dates.length }, () => {
+      this.handleCardClick(dates[0])
+    });
   };
 
   handleCardClick = (date, autoScroll = true) => {
